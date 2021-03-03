@@ -15,9 +15,12 @@ jobs:
     services:
       hoverfly:
         image: spectolabs/hoverfly:v1.1.5
+        ports:
+          - 8500:8500
+          - 8888:8888
 
     env:
-      HOVERFLY_HOST: hoverfly
+      HOVERFLY_HOST: localhost
       HOVERFLY_PROXY_PORT: 8500
       HOVERFLY_ADMIN_PORT: 8888
 
