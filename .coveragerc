@@ -1,0 +1,18 @@
+[run]
+branch = True
+source =
+    pytest_hoverfly
+
+[paths]
+source =
+    pytest_hoverfly
+
+[report]
+show_missing = True
+skip_covered = True
+exclude_lines =
+    pragma: no cover
+    if t.TYPE_CHECKING:
+    \.\.\.
+    raise NotImplementedError
+    def __repr__(self) -> str:
