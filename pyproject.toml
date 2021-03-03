@@ -32,11 +32,6 @@ pytest-cov = ">=2.7.1"
 requires = ["poetry>=1.0.3"]
 build-backend = "poetry.masonry.api"
 
-[[tool.poetry.source]]
-name = 'pypi-wrike'
-url = "https://pypi.wrke.in/simple"
-default = true
-
 [tool.isort]
 line_length = 120
 multi_line_output = 3
