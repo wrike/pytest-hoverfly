@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "pytest_hoverfly"
+version = "4.0.0"
+description = "Simplify working with Hoverfly from pytest"
+authors = ["Devops team <devops@team.wrike.com>"]
+repository = "https://git.wrke.in/ops/pytset-hoverfly"
+keywords = ['hoverfly', 'pytest', 'tests']
+exclude = ["tests", "*.tests"]
+classifiers = [
+    "Framework :: Pytest"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pytest = ">=5.0"
+requests = "^2.22.0"
+docker = "^4.2.0"
+typing_extensions = "^3.7.4"
+wrike-pytest-containers = "^1.0.5"
+
+[tool.poetry.dev-dependencies]
+flake8 = ">=3.7.7"
+toml = ">=0.10"
+isort = ">=5.3"
+pytest-cov = ">=2.7.1"
+
+[tool.poetry.plugins] # Optional super table
+[tool.poetry.plugins."pytest11"]
+"hoverfly" = "pytest_hoverfly.pytest_hoverfly"
+
+[build-system]
+requires = ["poetry>=1.0.3"]
+build-backend = "poetry.masonry.api"
+
+[[tool.poetry.source]]
+name = 'pypi-wrike'
+url = "https://pypi.wrke.in/simple"
+default = true
+
+[tool.isort]
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+lines_after_imports = 2
+force_grid_wrap = 3
+forced_separate = ["pytest_hovefly"]
+add_imports = "from __future__ import annotations"
