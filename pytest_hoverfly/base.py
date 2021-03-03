@@ -119,5 +119,3 @@ def _wait_until_ready(container: Hoverfly, timeout: float) -> None:
             delay *= 2
     else:
         raise TimeoutError(f"Container for Hoverfly did not start in {timeout}s")
-
-
