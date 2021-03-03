@@ -22,6 +22,8 @@ jobs:
           python-version: "3.7"
       - name: Install poetry
         run: make install_poetry
+      - name: Install
+        run: make prepare
       - name: Lint
         run: make lint
 
