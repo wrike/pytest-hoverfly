@@ -25,7 +25,9 @@ jobs:
       - name: Install
         run: make prepare
       - name: Lint
-        run: make lint
+        run: |
+          . .venv/bin/activate
+          make lint
 
 
 
