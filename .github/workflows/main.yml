@@ -15,15 +15,16 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
       - name: Run a one-line script
         run: echo Hello, world!
-        
       - uses: "actions/setup-python@v2"
         with:
           python-version: "3.7"
-      - name: "Install poetry"
+      - name: Install poetry
         run: make install_poetry
+      - name: Lint
+        run: make lint
+
 
 
 
