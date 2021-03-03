@@ -12,6 +12,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      hoverfly:
+        image: spectolabs/hoverfly:v1.1.5
+
+    env:
+      HOVERFLY_HOST: hoverfly
+      HOVERFLY_PROXY_PORT: 8500
+      HOVERFLY_ADMIN_PORT: 8888
+
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -28,6 +37,10 @@ jobs:
         run: |
           . .venv/bin/activate
           make lint
+      - name: Test
+        run: |
+          . .venv/bin/activate
+          make test
 
 
 
