@@ -14,7 +14,7 @@ from docker.errors import ImageNotFound
 from docker.models.containers import Container
 
 
-IMAGE = 'spectolabs/hoverfly:v1.1.5'
+IMAGE = "spectolabs/hoverfly:v1.1.5"
 CONTAINER_BASENAME = "test-hoverfly"
 
 
@@ -35,16 +35,16 @@ class Hoverfly:
     @classmethod
     def from_container(cls, container: Container) -> Hoverfly:
         return Hoverfly(
-            host='localhost',
-            admin_port=int(container.ports['8888/tcp'][0]['HostPort']),
-            proxy_port=int(container.ports['8500/tcp'][0]['HostPort']),
+            host="localhost",
+            admin_port=int(container.ports["8888/tcp"][0]["HostPort"]),
+            proxy_port=int(container.ports["8500/tcp"][0]["HostPort"]),
         )
 
     @classmethod
     def try_from_env(cls, env: t.Mapping[str, str]) -> t.Optional[Hoverfly]:
-        hoverfly_host = env.get('HOVERFLY_HOST')
-        proxy_port = env.get('HOVERFLY_PROXY_PORT')
-        admin_port = env.get('HOVERFLY_ADMIN_PORT')
+        hoverfly_host = env.get("HOVERFLY_HOST")
+        proxy_port = env.get("HOVERFLY_PROXY_PORT")
+        admin_port = env.get("HOVERFLY_ADMIN_PORT")
 
         if hoverfly_host and proxy_port and admin_port:
             return Hoverfly(hoverfly_host, int(admin_port), int(proxy_port))

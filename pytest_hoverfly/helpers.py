@@ -6,16 +6,16 @@ from pathlib import Path
 
 def extract_simulation_name_from_request(request):
     try:
-        marker = [m for m in request.node.own_markers if m.name == 'hoverfly'][0]
+        marker = [m for m in request.node.own_markers if m.name == "hoverfly"][0]
     except IndexError as e:
         raise RuntimeError("Test does not have Hoverfly marker") from e
 
     if marker.args:
         name = marker.args[0]
     else:
-        name = marker.kwargs['name']
+        name = marker.kwargs["name"]
 
-    return name if '.json' in name else f'{name}.json'
+    return name if ".json" in name else f"{name}.json"
 
 
 def get_simulations_path(config) -> Path:
@@ -34,19 +34,17 @@ def del_header(pair, header: str):
 
 
 def del_gcloud_credentials(pair):
-    if pair['request']['destination'][0]['value'] == 'oauth2.googleapis.com':
-        if pair['request']['path'][0]['value'] == '/token':
-            del pair['request']['body']
-            del_header(pair, 'Content-Length')
+    if pair["request"]["destination"][0]["value"] == "oauth2.googleapis.com":
+        if pair["request"]["path"][0]["value"] == "/token":
+            del pair["request"]["body"]
+            del_header(pair, "Content-Length")
 
 
 def ensure_simulation_dir(config) -> Path:
     path = get_simulations_path(config)
     if not path.exists():
         raise ValueError(
-            'To use pytest-hoverfly you must specify '
-            '--hoverfly-simulation-path. '
-            f'Current value: {path}'
+            "To use pytest-hoverfly you must specify " "--hoverfly-simulation-path. " f"Current value: {path}"
         )
 
     return path

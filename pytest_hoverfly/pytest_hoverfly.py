@@ -35,8 +35,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--hoverfly-simulation-path",
         dest="hoverfly_simulation_path",
-        help="Path to a directory with simulation files. "
-             "Environment variables will be expanded.",
+        help="Path to a directory with simulation files. " "Environment variables will be expanded.",
         type=Path,
     )
 
@@ -49,9 +48,8 @@ def pytest_addoption(parser):
     parser.addoption(
         "--hoverfly-cert",
         dest="hoverfly_cert",
-        default=Path(__file__).parent / 'cert.pem',
-        help="Path to hoverfly SSL certificate. Needed "
-             "for requests and aiohttp to trust hoverfly.",
+        default=Path(__file__).parent / "cert.pem",
+        help="Path to hoverfly SSL certificate. Needed " "for requests and aiohttp to trust hoverfly.",
         type=Path,
     )
 
@@ -94,16 +92,16 @@ def pytest_runtest_setup(item):
 
     ensure_simulation_dir(item.config)
 
-    stateful = marker.kwargs.pop('stateful', False)
-    record = marker.kwargs.pop('record', False)
+    stateful = marker.kwargs.pop("stateful", False)
+    record = marker.kwargs.pop("record", False)
 
-    if set(marker.kwargs) - {'name'}:
-        raise RuntimeError(f'Unknown argments passed to @hoverfly: {marker.kwargs}')
+    if set(marker.kwargs) - {"name"}:
+        raise RuntimeError(f"Unknown argments passed to @hoverfly: {marker.kwargs}")
 
     if record:
-        item.fixturenames.append('_stateful_simulation_recorder' if stateful else '_simulation_recorder')
+        item.fixturenames.append("_stateful_simulation_recorder" if stateful else "_simulation_recorder")
     else:
-        item.fixturenames.append('_simulation_replayer')
+        item.fixturenames.append("_simulation_replayer")
 
 
 @pytest.fixture
@@ -130,7 +128,7 @@ def _stateful_simulation_recorder(hoverfly_instance: Hoverfly, request, _patch_e
     yield from _recorder(hoverfly_instance, request, stateful=True)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def hoverfly_instance(request) -> Hoverfly:
     """Returns Hoverfly's instance host and ports.
 
@@ -144,7 +142,7 @@ def hoverfly_instance(request) -> Hoverfly:
 
     2. Instance managed by plugin. Container will be created and destroyed after.
     """
-    yield from get_container(create_container_kwargs={'command': request.config.option.hoverfly_args})
+    yield from get_container(create_container_kwargs={"command": request.config.option.hoverfly_args})
 
 
 @pytest.fixture
@@ -176,12 +174,12 @@ def _simulation_replayer(hoverfly_instance: Hoverfly, request, _patch_env):
     if request.node.rep_setup.passed and request.node.rep_call.failed:
         resp = session.get(f"{hoverfly_instance.admin_endpoint}/logs")
         resp.raise_for_status()
-        logs = resp.json()['logs']
+        logs = resp.json()["logs"]
         last_log = logs[-1]
-        if 'error' in last_log:
-            print('----------------------------')
+        if "error" in last_log:
+            print("----------------------------")
             print("Hoverfly's log has an error!")
-            print(last_log['error'])
+            print(last_log["error"])
 
     r = session.delete(f"{hoverfly_instance.admin_endpoint}/simulation")
     r.raise_for_status()
@@ -197,7 +195,7 @@ def _patch_env(request, hoverfly_instance: Hoverfly):
     # https://hoverfly.readthedocs.io/en/latest/pages/tutorials/basic/https/https.html
     path_to_cert = request.config.option.hoverfly_cert
     if not path_to_cert.exists():
-        raise ValueError(f'Cert file not found: {path_to_cert}')
+        raise ValueError(f"Cert file not found: {path_to_cert}")
 
     os.environ["SSL_CERT_FILE"] = str(path_to_cert)
     os.environ["REQUESTS_CA_BUNDLE"] = str(path_to_cert)
@@ -234,7 +232,7 @@ def _recorder(hoverfly_instance: Hoverfly, request, stateful: bool):
 
     # Delete common sensitive or excess data
     for pair in data["data"]["pairs"]:
-        del_header(pair, 'Authorization')
+        del_header(pair, "Authorization")
         del_header(pair, "User-Agent")
         del_header(pair, "X-Goog-Api-Client")
         del_header(pair, "Private-Token")

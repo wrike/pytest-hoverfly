@@ -4,7 +4,7 @@ VENV_NAME := .venv
 PYTHON_BIN := python3
 POETRY_VERSION := 1.0.3
 POETRY_BIN := ${HOME}/.poetry/bin/poetry
-
+MAX_LINE_LENGTH := 120
 
 .PHONY: help test lint pyfmt prepare clean version name install_poetry
 help:
@@ -42,10 +42,13 @@ test:
 
 lint:
 	flake8 --max-line-length=120 ${PYTHON_MODULE} tests
-	isort --check-only --diff ${PYTHON_MODULE} tests
+	black -l ${MAX_LINE_LENGTH} --check ${PYTHON_MODULE} tests
+	isort -l ${MAX_LINE_LENGTH} --check-only --diff --jobs 4 ${PYTHON_MODULE} tests
 
 pyfmt:
-	isort ${PYTHON_MODULE} tests
+	black -l ${MAX_LINE_LENGTH} --quiet ${PYTHON_MODULE} tests
+	isort -l ${MAX_LINE_LENGTH} ${PYTHON_MODULE} tests --jobs 4
+
 
 clean:
 	rm -rf ${VENV_NAME}
