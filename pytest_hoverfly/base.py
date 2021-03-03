@@ -107,7 +107,7 @@ def get_container(
         raw_container.remove(v=True, force=True)
 
 
-def _wait_until_ready(container, timeout):
+def _wait_until_ready(container: Hoverfly, timeout: float) -> None:
     now = time.monotonic()
     delay = 0.001
 
