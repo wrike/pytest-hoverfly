@@ -59,3 +59,6 @@ version:
 
 name:
 	@sed -n 's/.*name = "\(.*\)".*/\1/p' pyproject.toml
+
+publish:
+    ${POETRY_BIN} publish --build
