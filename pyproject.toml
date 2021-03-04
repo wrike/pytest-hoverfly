@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "pytest_hoverfly"
-version = "4.0.0"
+version = "4.0.1"
 description = "Simplify working with Hoverfly from pytest"
 authors = ["Devops team <devops@team.wrike.com>"]
-repository = "https://git.wrke.in/ops/pytset-hoverfly"
+repository = "https://github.com/wrike/pytest-hoverfly"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/wrike/pytest-hoverfly"
 keywords = ['hoverfly', 'pytest', 'tests']
 exclude = ["tests", "*.tests"]
 classifiers = [
