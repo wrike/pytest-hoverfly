@@ -1,4 +1,4 @@
-![CI](https://github.com/wrike/pytest-hoverfly/actions/workflows/main.yml/badge.svg)
+[![CI](https://github.com/wrike/pytest-hoverfly/actions/workflows/main.yml/badge.svg)](https://github.com/wrike/pytest-hoverfly/actions/workflows/main.yml)
 
 
 A helper for working with [Hoverfly](https://hoverfly.readthedocs.io/en/latest/) from `pytest`.
