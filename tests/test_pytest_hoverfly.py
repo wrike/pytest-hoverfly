@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from unittest.mock import ANY
 
 import pytest
 import requests
@@ -105,6 +106,7 @@ def test_hoverfly_decorator_recorder(testdir, tmpdir):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
+        from unittest.mock import ANY
         import pytest
         import requests
         from pytest_hoverfly import hoverfly
@@ -117,7 +119,7 @@ def test_hoverfly_decorator_recorder(testdir, tmpdir):
 
             )
 
-            assert resp.json() == {'message': 'Version 2.1.1', 'subtitle': 'FOAAS'}
+            assert resp.json() == {'message': ANY, 'subtitle': 'FOAAS'}
     """
     )
 
@@ -130,13 +132,14 @@ def test_hoverfly_decorator_recorder(testdir, tmpdir):
         simulation = json.load(f)
 
     assert len(simulation["data"]["pairs"]) == 1
-    assert simulation["data"]["pairs"][0]["response"]["body"] == '{"message":"Version 2.1.1","subtitle":"FOAAS"}'
+    assert "FOAAS" in simulation["data"]["pairs"][0]["response"]["body"]
 
 
 def test_hoverfly_decorator_stateful_recorder(testdir, tmpdir):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
+        from unittest.mock import ANY
         import pytest
         import requests
         from pytest_hoverfly import hoverfly
@@ -154,7 +157,7 @@ def test_hoverfly_decorator_stateful_recorder(testdir, tmpdir):
                 headers={'Accept': 'application/json'},
             )
 
-            assert resp.json() == {'message': 'Version 2.1.1', 'subtitle': 'FOAAS'}
+            assert resp.json() == {'message': ANY, 'subtitle': 'FOAAS'}
     """
     )
 
@@ -184,7 +187,7 @@ def test_lack_of_unintended_side_effects():
     resp = requests.get("https://foaas.com/version", headers={"Accept": "application/json"})
 
     try:
-        assert resp.json() == {"message": "Version 2.1.1", "subtitle": "FOAAS"}, resp.text
+        assert resp.json() == {"message": ANY, "subtitle": "FOAAS"}, resp.text
     except json.decoder.JSONDecodeError:
         pytest.fail(resp.text + "\n\n(Request went to Hoverfly insted of foaas.com)")
 
