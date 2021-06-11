@@ -43,8 +43,6 @@ def del_gcloud_credentials(pair):
 def ensure_simulation_dir(config) -> Path:
     path = get_simulations_path(config)
     if not path.exists():
-        raise ValueError(
-            "To use pytest-hoverfly you must specify " "--hoverfly-simulation-path. " f"Current value: {path}"
-        )
+        raise ValueError(f"To use pytest-hoverfly you must specify --hoverfly-simulation-path. Current value: {path}")
 
     return path

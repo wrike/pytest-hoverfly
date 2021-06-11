@@ -24,7 +24,15 @@ from .helpers import (
 
 
 class HoverflyMarker(te.Protocol):
-    def __call__(self, name: str, *, record: bool = False, stateful: bool = False) -> t.Callable[..., t.Any]:
+    def __call__(
+        self,
+        name: str,
+        *,
+        record: bool = False,
+        stateful: bool = False,
+        postprocess: t.Callable[[], t.Any],
+        enable_default_postprocessing: bool = True,
+    ) -> t.Callable[..., t.Any]:
         ...
 
 

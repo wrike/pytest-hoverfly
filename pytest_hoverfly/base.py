@@ -94,7 +94,7 @@ def get_container(
     )
 
     raw_container.start()
-    raw_container.reload()
+    _wait_until_ports_are_ready(raw_container, ports, timeout)
 
     container = Hoverfly.from_container(raw_container)
 
@@ -119,3 +119,21 @@ def _wait_until_ready(container: Hoverfly, timeout: float) -> None:
             delay *= 2
     else:
         raise TimeoutError(f"Container for Hoverfly did not start in {timeout}s")
+
+
+def _wait_until_ports_are_ready(raw_container: Container, ports: t.Dict[str, t.Any], timeout: float) -> None:
+    """Docker takes some time to allocate ports so they may not be immediately available."""
+    now = time.monotonic()
+    delay = 0.001
+
+    while (time.monotonic() - now) < timeout:
+        raw_container.reload()
+        # value of a port is either a None or an empty list when it's not ready
+        ready = {k: v for k, v in raw_container.ports.items() if v}
+        if set(ports).issubset(ready):
+            break
+        else:
+            time.sleep(delay)
+            delay *= 2
+    else:
+        raise TimeoutError(f"Docker failed to expose ports in {timeout}s")
