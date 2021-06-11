@@ -19,6 +19,9 @@ pytest = ">=5.0"
 requests = ">=2.22.0"
 docker = ">=4.2.0"
 typing_extensions = ">=3.7.4"
+# docker==5.0 needs six but doesn't require it as a dependency
+# https://github.com/docker/docker-py/issues/2842
+six = ">=1.15.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = ">=3.7.7"

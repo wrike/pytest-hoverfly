@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [4.0.2] - 2021-06-11
 ### Fixed
 - Wait until container's ports are available before considering it created
+- Fix installation by explicitly including six as a dependency
 
 ## [4.0.0] - 2021-03-03
 ### Changed
