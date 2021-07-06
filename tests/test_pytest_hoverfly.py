@@ -103,6 +103,7 @@ def test_hoverfly_decorator_unknown_argument(testdir):
 
 
 def test_hoverfly_decorator_recorder(testdir, tmpdir):
+    """This test hits a network!"""
     # create a temporary pytest test file
     testdir.makepyfile(
         """
@@ -136,6 +137,7 @@ def test_hoverfly_decorator_recorder(testdir, tmpdir):
 
 
 def test_hoverfly_decorator_stateful_recorder(testdir, tmpdir):
+    """This test hits a network!"""
     # create a temporary pytest test file
     testdir.makepyfile(
         """
@@ -183,6 +185,8 @@ def test_lack_of_unintended_side_effects():
     This test must be run after at least one hoverfly-using test has
     been run, so that session-scoped fixtures with potential side-effects
     are initialized.
+
+    This test hits a network!
     """
     resp = requests.get("https://foaas.com/version", headers={"Accept": "application/json"})
 

@@ -30,8 +30,6 @@ class HoverflyMarker(te.Protocol):
         *,
         record: bool = False,
         stateful: bool = False,
-        postprocess: t.Callable[[], t.Any],
-        enable_default_postprocessing: bool = True,
     ) -> t.Callable[..., t.Any]:
         ...
 
@@ -43,7 +41,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--hoverfly-simulation-path",
         dest="hoverfly_simulation_path",
-        help="Path to a directory with simulation files. " "Environment variables will be expanded.",
+        help="Path to a directory with simulation files. Environment variables will be expanded.",
         type=Path,
     )
 
@@ -57,7 +55,7 @@ def pytest_addoption(parser):
         "--hoverfly-cert",
         dest="hoverfly_cert",
         default=Path(__file__).parent / "cert.pem",
-        help="Path to hoverfly SSL certificate. Needed " "for requests and aiohttp to trust hoverfly.",
+        help="Path to hoverfly SSL certificate. Needed for requests and aiohttp to trust hoverfly.",
         type=Path,
     )
 
@@ -150,7 +148,10 @@ def hoverfly_instance(request) -> Hoverfly:
 
     2. Instance managed by plugin. Container will be created and destroyed after.
     """
-    yield from get_container(create_container_kwargs={"command": request.config.option.hoverfly_args})
+    yield from get_container(
+        create_container_kwargs={"command": request.config.option.hoverfly_args},
+        image=request.config.option.hoverfly_image,
+    )
 
 
 @pytest.fixture

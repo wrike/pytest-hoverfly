@@ -77,3 +77,10 @@ tell it to use Hoverfly as HTTP(S) proxy and to trust Hoverfly's certificate. Se
 
 #### How to re-record a test
 Add `record=True` again, and run the test. The simulation file will be overwritten.
+
+
+#### Change Hoverfly version
+To use a different Hoverfly version, specify `--hoverfly-image`. It must be a valid Docker image tag.
+
+#### Start Hoverfly with custom parameters
+Use `--hoverfly-args`. It is passed as is to a Hoverfly container.
