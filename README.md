@@ -15,6 +15,8 @@ or
 There are two use cases: to record a new test and to use recordings.
 
 #### Prerequisites
+You need to have [Docker](https://www.docker.com/) installed. `pytest-hoverfly` uses it under the hood to create Hoverfly instances.
+
 Create a directory to store simulation files. Pass `--hoverfly-simulation-path` option 
 when calling `pytest`. The path may be absolute or relative to your `pytest.ini` file.
 E.g. if you have a structure like this:
