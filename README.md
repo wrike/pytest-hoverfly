@@ -1,7 +1,7 @@
 [![CI](https://github.com/wrike/pytest-hoverfly/actions/workflows/main.yml/badge.svg)](https://github.com/wrike/pytest-hoverfly/actions/workflows/main.yml)
 
 
-A helper for working with [Hoverfly](https://hoverfly.readthedocs.io/en/latest/) from `pytest`.
+A helper for working with [Hoverfly](https://hoverfly.readthedocs.io/en/latest/) from `pytest`. Works both locally and in CI.
 
 ### Installation
 `pip install pytest-hoverfly`
@@ -35,6 +35,11 @@ Then put this in you pytest.ini:
 addopts =
     --hoverfly-simulation-path=tests/simulations
 ```
+
+#### Without Docker Desktop
+If you're using something like [lima](https://github.com/lima-vm/lima) instead of Docker Desktop, you need to specify a path to Docker API. For lima: 
+
+`export DOCKER_HOST=unix:///Users/<YOUR-USER>/.lima/default/sock/docker.sock`
 
 #### How to record a test
 ```python
@@ -86,3 +91,24 @@ To use a different Hoverfly version, specify `--hoverfly-image`. It must be a va
 
 #### Start Hoverfly with custom parameters
 Use `--hoverfly-args`. It is passed as is to a Hoverfly container.
+
+### Usage in CI
+CI systems like Gitlab CI or Github Actions allow you to run arbitrary services as containers. `pytest-hoverfly` can detect if a Hoverfly instance is already running by looking at certain environment variables. If it detects a running instance, `pytest-hovefly` uses it, and doesn't create a new container.
+
+For Github Actions:
+
+```
+services:
+  hoverfly:
+    image: spectolabs/hoverfly:v1.3.2
+    ports:
+      - 8500:8500
+      - 8888:8888
+
+  env:
+    HOVERFLY_HOST: localhost
+    HOVERFLY_PROXY_PORT: 8500
+    HOVERFLY_ADMIN_PORT: 8888
+```
+
+Mind that all three variables must be specified.
