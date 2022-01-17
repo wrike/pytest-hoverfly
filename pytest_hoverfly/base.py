@@ -74,7 +74,7 @@ def get_container(
     ports: t.Optional[t.Dict[str, t.Optional[t.List[t.Dict[str, int]]]]] = None,
     image: str = IMAGE,
     timeout: float = 3.0,
-    docker_factory: t.Callable[[], DockerClient] = DockerClient,
+    docker_factory: t.Callable[[], DockerClient] = DockerClient.from_env,
     create_container_kwargs: t.Optional[t.Mapping[str, t.Any]] = None,
 ):
     external_service = Hoverfly.try_from_env(os.environ)
