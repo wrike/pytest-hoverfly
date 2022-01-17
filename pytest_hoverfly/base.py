@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import dataclasses as dc
 import os
+import socket
 import time
 import typing as t
 import urllib.error
@@ -50,10 +51,21 @@ class Hoverfly:
             return Hoverfly(hoverfly_host, int(admin_port), int(proxy_port))
 
     def is_ready(self) -> bool:
+        return self.admin_endpoint_is_ready() and self.proxy_is_ready()
+
+    def admin_endpoint_is_ready(self):
         try:
             urllib.request.urlopen(f"{self.admin_endpoint}/state")
             return True
         except (urllib.error.URLError, RemoteDisconnected):
+            return False
+
+    def proxy_is_ready(self):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((self.host, self.proxy_port))
+            return True
+        except ConnectionRefusedError:
             return False
 
 
