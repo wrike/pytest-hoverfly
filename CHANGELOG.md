@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0] - 2022-01-17
+### Changed
+- Allow specifying Docker API host via `DOCKER_HOST` env var
+- Remove the dependency on six
+- Bump minimal `docker` version to 5.0.3
+### Fixed
+- Fix the situation when Hoverfly proxy wasn't ready to be used
+
 ## [4.0.2] - 2021-07-06
 ### Fixed
 - Fix specifying a different Hoverfly image
