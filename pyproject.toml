@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytest_hoverfly"
-version = "5.0.0"
+version = "5.0.1"
 description = "Simplify working with Hoverfly from pytest"
 authors = ["Devops team at Wrike <devops@team.wrike.com>"]
 repository = "https://github.com/wrike/pytest-hoverfly"
