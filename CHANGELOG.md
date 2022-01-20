@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.0.1] - 2022-01-20
 ### Added
-- Allow specifying service host via `SERVICE_HOST` env var
+- Allow specifying the service host via `SERVICE_HOST` env var
 
 ## [5.0.0] - 2022-01-17
 ### Changed

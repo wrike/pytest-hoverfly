@@ -41,7 +41,7 @@ If you're using something like [lima](https://github.com/lima-vm/lima) instead o
 
 `export DOCKER_HOST=unix:///Users/<YOUR-USER>/.lima/default/sock/docker.sock`
 
-If you're using something like [minikube](https://github.com/kubernetes/minikube) instead of Docker Desktop, you need to specify service host because it doesn't expose them to localhost. For minikube you get the service ip with `minikube ip` and then put this ip to the env var:
+If you're using something like [minikube](https://github.com/kubernetes/minikube) instead of Docker Desktop, you need to specify the service host because the exposed ports are not available on localhost. For minikube you get the service IP with `minikube ip` command and then put it to the env var:
 
 `export SERVICE_HOST=192.168.0.xxx`
 
