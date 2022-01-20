@@ -17,7 +17,6 @@ from docker.models.containers import Container
 
 IMAGE = "spectolabs/hoverfly:v1.3.2"
 CONTAINER_BASENAME = "test-hoverfly"
-SERVICE_HOST_VARIABLE_NAME = "SERVICE_HOST"
 
 
 @dc.dataclass(frozen=True)
@@ -110,7 +109,7 @@ def get_container(
     _wait_until_ports_are_ready(raw_container, ports, timeout)
 
     container = Hoverfly.from_container(
-        os.environ.get(SERVICE_HOST_VARIABLE_NAME, "localhost"),
+        os.environ.get("SERVICE_HOST", "localhost"),
         raw_container,
     )
 
