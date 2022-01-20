@@ -34,9 +34,9 @@ class Hoverfly:
         return f"http://{self.host}:{self.proxy_port}"
 
     @classmethod
-    def from_container(cls, container: Container) -> Hoverfly:
+    def from_container(cls, service_host: str, container: Container) -> Hoverfly:
         return Hoverfly(
-            host="localhost",
+            host=service_host,
             admin_port=int(container.ports["8888/tcp"][0]["HostPort"]),
             proxy_port=int(container.ports["8500/tcp"][0]["HostPort"]),
         )
@@ -108,7 +108,10 @@ def get_container(
     raw_container.start()
     _wait_until_ports_are_ready(raw_container, ports, timeout)
 
-    container = Hoverfly.from_container(raw_container)
+    container = Hoverfly.from_container(
+        os.environ.get("SERVICE_HOST", "localhost"),
+        raw_container,
+    )
 
     try:
         _wait_until_ready(container, timeout)
