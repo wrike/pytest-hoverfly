@@ -2,7 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - '*'
   pull_request:
     branches: [ master ]
 
@@ -14,7 +15,7 @@ jobs:
 
     services:
       hoverfly:
-        image: spectolabs/hoverfly:v1.3.2
+        image: spectolabs/hoverfly:v1.3.6
         ports:
           - 8500:8500
           - 8888:8888
