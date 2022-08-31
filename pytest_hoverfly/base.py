@@ -15,7 +15,7 @@ from docker.errors import ImageNotFound
 from docker.models.containers import Container
 
 
-IMAGE = "spectolabs/hoverfly:v1.3.6"
+IMAGE = "spectolabs/hoverfly:v1.3.7"
 CONTAINER_BASENAME = "test-hoverfly"
 
 
