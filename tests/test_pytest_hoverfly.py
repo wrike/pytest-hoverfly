@@ -51,7 +51,7 @@ def test_hoverfly_decorator(testdir, simulation_path):
 
 
 def test_hoverfly_decorator_name_kwarg(testdir):
-    """Simulation name may be passed as a keyword argument. """
+    """Simulation name may be passed as a keyword argument."""
     # create a temporary pytest test file
     testdir.makepyfile(
         """
@@ -81,7 +81,7 @@ def test_hoverfly_decorator_name_kwarg(testdir):
 
 
 def test_hoverfly_decorator_unknown_argument(testdir):
-    """Unknown arguments must raise an error. """
+    """Unknown arguments must raise an error."""
     # create a temporary pytest test file
     testdir.makepyfile(
         """
