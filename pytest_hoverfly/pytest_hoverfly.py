@@ -91,7 +91,7 @@ def pytest_configure(config):
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_setup(item):
-    """Add replay or record fixtures to the test, based on @hoverfly decorator. """
+    """Add replay or record fixtures to the test, based on @hoverfly decorator."""
     marker = item.get_closest_marker(name="hoverfly")
     if not marker:
         return
