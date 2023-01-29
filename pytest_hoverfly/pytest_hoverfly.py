@@ -60,6 +60,18 @@ def pytest_addoption(parser):
     )
 
     parser.addoption(
+        "--hoverfly-start-timeout",
+        dest="hoverfly_start_timeout",
+        default=30.0,
+        help=(
+            "Timeout used while starting the container. "
+            "It's used two times: waiting for ports to start accepting connections "
+            "and waiting for endpoints to start handling requests."
+        ),
+        type=float,
+    )
+
+    parser.addoption(
         "--hoverfly-args",
         dest="hoverfly_args",
         help="Arguments for hoverfly command. Passed as is.",
@@ -151,6 +163,7 @@ def hoverfly_instance(request) -> Hoverfly:
     yield from get_container(
         create_container_kwargs={"command": request.config.option.hoverfly_args},
         image=request.config.option.hoverfly_image,
+        timeout=request.config.option.hoverfly_start_timeout,
     )
 
 

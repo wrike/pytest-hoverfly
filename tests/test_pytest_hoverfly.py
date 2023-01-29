@@ -107,20 +107,18 @@ def test_hoverfly_decorator_recorder(testdir, tmpdir):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
-        from unittest.mock import ANY
-        import pytest
-        import requests
-        from pytest_hoverfly import hoverfly
+from unittest.mock import ANY
+import requests
+from pytest_hoverfly import hoverfly
 
-        @hoverfly('foaas_version_simulation', record=True)
-        def test_stateful_simulation_recorder():
-            resp = requests.get(
-                'https://foaas.com/version',
-                headers={'Accept': 'application/json'},
+@hoverfly('foaas_version_simulation', record=True)
+def test_stateful_simulation_recorder():
+    resp = requests.get(
+        'https://foaas.com/version',
+        headers={'Accept': 'application/json'},
+    )
 
-            )
-
-            assert resp.json() == {'message': ANY, 'subtitle': 'FOAAS'}
+    assert resp.json() == {'message': ANY, 'subtitle': 'FOAAS'}
     """
     )
 
@@ -202,3 +200,35 @@ def test_lack_of_unintended_side_effects():
     assert "HTTPS_PROXY" not in os.environ
     assert "SSL_CERT_FILE" not in os.environ
     assert "REQUESTS_CA_BUNDLE" not in os.environ
+
+
+def test_timeout_option(testdir):
+    """Test timeout option is parsed correctly."""
+    testdir.makepyfile(
+        """
+import requests
+from pytest_hoverfly import hoverfly
+
+
+@hoverfly(name='foaas_version_simulation')
+def test_timeout_parsing(request):
+    resp = requests.get(
+        'https://foaas.com/version',
+        headers={'Accept': 'application/json'},
+    )
+
+    assert resp.json() == {'message': 'Version 2.1.1', 'subtitle': 'FOAAS'}
+
+    # Hoverfly adds Hoverfly: Was-Here header
+    assert 'Hoverfly' in resp.headers
+
+    assert request.config.option.hoverfly_start_timeout == 55.0
+    """
+    )
+
+    # run all tests with pytest
+    result = testdir.runpytest_subprocess(
+        "--hoverfly-simulation-path", str(CURDIR / "simulations"), "--hoverfly-start-timeout", "55", "-vv"
+    )
+
+    result.assert_outcomes(passed=1)
