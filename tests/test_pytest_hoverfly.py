@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from unittest.mock import ANY
 
 import pytest
 import requests
@@ -25,22 +24,21 @@ def test_hoverfly_decorator(testdir, simulation_path):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
-        import pytest
-        import requests
-        from pytest_hoverfly import hoverfly
+import requests
+from pytest_hoverfly import hoverfly
 
 
-        @hoverfly('foaas_version_simulation')
-        def test_simulation_replayer():
-            resp = requests.get(
-                'https://foaas.com/version',
-                headers={'Accept': 'application/json'},
-            )
+@hoverfly('archive_org_simulation')
+def test_simulation_replayer():
+    resp = requests.get(
+        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        headers={'Accept': 'application/json'},
+    )
 
-            assert resp.json() == {'message': 'Version 2.1.1', 'subtitle': 'FOAAS'}
+    assert resp.json() == {"result": 1674991955}
 
-            # Hoverfly adds Hoverfly: Was-Here header
-            assert 'Hoverfly' in resp.headers
+    # Hoverfly adds Hoverfly: Was-Here header
+    assert 'Hoverfly' in resp.headers
     """
     )
 
@@ -55,22 +53,21 @@ def test_hoverfly_decorator_name_kwarg(testdir):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
-        import pytest
-        import requests
-        from pytest_hoverfly import hoverfly
+import requests
+from pytest_hoverfly import hoverfly
 
 
-        @hoverfly(name='foaas_version_simulation')
-        def test_simulation_replayer():
-            resp = requests.get(
-                'https://foaas.com/version',
-                headers={'Accept': 'application/json'},
-            )
+@hoverfly(name='archive_org_simulation')
+def test_simulation_replayer():
+    resp = requests.get(
+        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        headers={'Accept': 'application/json'},
+    )
 
-            assert resp.json() == {'message': 'Version 2.1.1', 'subtitle': 'FOAAS'}
+    assert resp.json() == {"result": 1674991955}
 
-            # Hoverfly adds Hoverfly: Was-Here header
-            assert 'Hoverfly' in resp.headers
+    # Hoverfly adds Hoverfly: Was-Here header
+    assert 'Hoverfly' in resp.headers
     """
     )
 
@@ -85,14 +82,12 @@ def test_hoverfly_decorator_unknown_argument(testdir):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
-        import pytest
-        import requests
-        from pytest_hoverfly import hoverfly
+from pytest_hoverfly import hoverfly
 
 
-        @hoverfly(name='foaas_version_simulation', doge='doge')
-        def test_simulation_replayer():
-            ...
+@hoverfly(name='archive_org_simulation', doge='doge')
+def test_simulation_replayer():
+    ...
     """
     )
 
@@ -107,18 +102,21 @@ def test_hoverfly_decorator_recorder(testdir, tmpdir):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
-from unittest.mock import ANY
 import requests
 from pytest_hoverfly import hoverfly
 
-@hoverfly('foaas_version_simulation', record=True)
+@hoverfly('archive_org_simulation', record=True)
 def test_stateful_simulation_recorder():
     resp = requests.get(
-        'https://foaas.com/version',
-        headers={'Accept': 'application/json'},
+        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        headers={
+            'Accept': 'application/json',
+            # If we do not add it, hoverlfy would save encoded body, which is harder to verify.
+            'Accept-Encoding': 'identity'
+        },
     )
 
-    assert resp.json() == {'message': ANY, 'subtitle': 'FOAAS'}
+    assert resp.json() == {"result": 1674991955}
     """
     )
 
@@ -127,11 +125,11 @@ def test_stateful_simulation_recorder():
 
     result.assert_outcomes(passed=1)
 
-    with open(tmpdir / "foaas_version_simulation.json") as f:
+    with open(tmpdir / "archive_org_simulation.json") as f:
         simulation = json.load(f)
 
     assert len(simulation["data"]["pairs"]) == 1
-    assert "FOAAS" in simulation["data"]["pairs"][0]["response"]["body"]
+    assert "1674991955" in simulation["data"]["pairs"][0]["response"]["body"]
 
 
 def test_hoverfly_decorator_stateful_recorder(testdir, tmpdir):
@@ -139,25 +137,23 @@ def test_hoverfly_decorator_stateful_recorder(testdir, tmpdir):
     # create a temporary pytest test file
     testdir.makepyfile(
         """
-        from unittest.mock import ANY
-        import pytest
-        import requests
-        from pytest_hoverfly import hoverfly
+import requests
+from pytest_hoverfly import hoverfly
 
-        @hoverfly('foaas_version_simulation', record=True, stateful=True)
-        def test_stateful_simulation_recorder():
-            requests.get(
-                'https://foaas.com/version',
-                headers={'Accept': 'application/json'},
+@hoverfly('archive_org_simulation', record=True, stateful=True)
+def test_stateful_simulation_recorder():
+    requests.get(
+        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        headers={'Accept': 'application/json'},
 
-            )
+    )
 
-            resp = requests.get(
-                'https://foaas.com/version',
-                headers={'Accept': 'application/json'},
-            )
+    resp = requests.get(
+        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        headers={'Accept': 'application/json'},
+    )
 
-            assert resp.json() == {'message': ANY, 'subtitle': 'FOAAS'}
+    assert resp.json() == {"result": 1674991955}
     """
     )
 
@@ -166,7 +162,7 @@ def test_hoverfly_decorator_stateful_recorder(testdir, tmpdir):
 
     result.assert_outcomes(passed=1)
 
-    with open(Path(tmpdir) / "foaas_version_simulation.json") as f:
+    with open(Path(tmpdir) / "archive_org_simulation.json") as f:
         simulation = json.load(f)
 
     assert len(simulation["data"]["pairs"]) == 2
@@ -186,12 +182,12 @@ def test_lack_of_unintended_side_effects():
 
     This test hits a network!
     """
-    resp = requests.get("https://foaas.com/version", headers={"Accept": "application/json"})
+    resp = requests.get("https://archive.org/metadata/SPD-SLRSY-1867/created", headers={"Accept": "application/json"})
 
     try:
-        assert resp.json() == {"message": ANY, "subtitle": "FOAAS"}, resp.text
+        assert resp.json() == {"result": 1674991955}, resp.text
     except json.decoder.JSONDecodeError:
-        pytest.fail(resp.text + "\n\n(Request went to Hoverfly insted of foaas.com)")
+        pytest.fail(resp.text + "\n\n(Request went to Hoverfly insted of archive.org)")
 
     # Hoverfly adds Hoverfly: Was-Here header
     assert "Hoverfly" not in resp.headers
@@ -210,14 +206,14 @@ import requests
 from pytest_hoverfly import hoverfly
 
 
-@hoverfly(name='foaas_version_simulation')
+@hoverfly(name='archive_org_simulation')
 def test_timeout_parsing(request):
     resp = requests.get(
-        'https://foaas.com/version',
+        'https://archive.org/metadata/SPD-SLRSY-1867/created',
         headers={'Accept': 'application/json'},
     )
 
-    assert resp.json() == {'message': 'Version 2.1.1', 'subtitle': 'FOAAS'}
+    assert resp.json() == {"result": 1674991955}
 
     # Hoverfly adds Hoverfly: Was-Here header
     assert 'Hoverfly' in resp.headers

@@ -6,7 +6,7 @@
           "path": [
             {
               "matcher": "exact",
-              "value": "/version"
+              "value": "/metadata/SPD-SLRSY-1867/created"
             }
           ],
           "method": [
@@ -18,7 +18,7 @@
           "destination": [
             {
               "matcher": "exact",
-              "value": "foaas.com"
+              "value": "archive.org"
             }
           ],
           "scheme": [
@@ -40,12 +40,6 @@
                 "value": "application/json"
               }
             ],
-            "Accept-Encoding": [
-              {
-                "matcher": "exact",
-                "value": "gzip, deflate"
-              }
-            ],
             "Connection": [
               {
                 "matcher": "exact",
@@ -56,63 +50,35 @@
         },
         "response": {
           "status": 200,
-          "body": "{\"message\":\"Version 2.1.1\",\"subtitle\":\"FOAAS\"}",
+          "body": "{\"result\":1674991955}",
           "encodedBody": false,
           "headers": {
-            "Access-Control-Allow-Headers": [
-              "Content-Type"
-            ],
-            "Access-Control-Allow-Methods": [
-              "GET, OPTIONS"
-            ],
             "Access-Control-Allow-Origin": [
               "*"
-            ],
-            "Cf-Cache-Status": [
-              "DYNAMIC"
-            ],
-            "Cf-Ray": [
-              "56320068ca6acdb7-CDG"
             ],
             "Connection": [
               "keep-alive"
             ],
-            "Content-Length": [
-              "46"
-            ],
             "Content-Type": [
-              "application/json; charset=utf-8"
+              "application/json"
             ],
             "Date": [
-              "Mon, 10 Feb 2020 23:53:17 GMT"
-            ],
-            "Etag": [
-              "W/\"2e-QOrjR0GvSxG4LYg1O8wYFO7HqmM\""
-            ],
-            "Expect-Ct": [
-              "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\""
+              "Sun, 29 Jan 2023 14:47:47 GMT"
             ],
             "Hoverfly": [
               "Was-Here"
             ],
-            "Server": [
-              "cloudflare"
+            "Referrer-Policy": [
+              "no-referrer-when-downgrade"
             ],
-            "Set-Cookie": [
-              "__cfduid=d090b33a06108864d458742671e3766ec1581378796; expires=Wed, 11-Mar-20 23:53:16 GMT; path=/; domain=.foaas.com; HttpOnly; SameSite=Lax",
-              "i18next=dev; path=/; expires=Wed, 10 Feb 2021 23:53:17 GMT"
+            "Server": [
+              "nginx/1.18.0 (Ubuntu)"
+            ],
+            "Strict-Transport-Security": [
+              "max-age=15724800"
             ],
             "Vary": [
               "Accept-Encoding"
-            ],
-            "Via": [
-              "1.1 vegur"
-            ],
-            "X-Clacks-Overhead": [
-              "GNU Terry Pratchett"
-            ],
-            "X-Content-Type-Options": [
-              "nosniff"
             ]
           },
           "templated": false
@@ -125,8 +91,8 @@
     }
   },
   "meta": {
-    "schemaVersion": "v5",
-    "hoverflyVersion": "v1.1.4",
-    "timeExported": "2020-02-10T23:53:17Z"
+    "schemaVersion": "v5.1",
+    "hoverflyVersion": "v1.3.7",
+    "timeExported": "2023-01-29T14:47:47Z"
   }
 }
