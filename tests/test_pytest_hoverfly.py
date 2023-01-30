@@ -31,11 +31,11 @@ from pytest_hoverfly import hoverfly
 @hoverfly('archive_org_simulation')
 def test_simulation_replayer():
     resp = requests.get(
-        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        'https://archive.org/metadata/SPD-SLRSY-1867/metadata/identifier',
         headers={'Accept': 'application/json'},
     )
 
-    assert resp.json() == {"result": 1674991955}
+    assert resp.json() == {"result": "SPD-SLRSY-1867"}
 
     # Hoverfly adds Hoverfly: Was-Here header
     assert 'Hoverfly' in resp.headers
@@ -60,11 +60,11 @@ from pytest_hoverfly import hoverfly
 @hoverfly(name='archive_org_simulation')
 def test_simulation_replayer():
     resp = requests.get(
-        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        'https://archive.org/metadata/SPD-SLRSY-1867/metadata/identifier',
         headers={'Accept': 'application/json'},
     )
 
-    assert resp.json() == {"result": 1674991955}
+    assert resp.json() == {"result": "SPD-SLRSY-1867"}
 
     # Hoverfly adds Hoverfly: Was-Here header
     assert 'Hoverfly' in resp.headers
@@ -108,7 +108,7 @@ from pytest_hoverfly import hoverfly
 @hoverfly('archive_org_simulation', record=True)
 def test_stateful_simulation_recorder():
     resp = requests.get(
-        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        'https://archive.org/metadata/SPD-SLRSY-1867/metadata/identifier',
         headers={
             'Accept': 'application/json',
             # If we do not add it, hoverlfy would save encoded body, which is harder to verify.
@@ -116,7 +116,7 @@ def test_stateful_simulation_recorder():
         },
     )
 
-    assert resp.json() == {"result": 1674991955}
+    assert resp.json() == {"result": "SPD-SLRSY-1867"}
     """
     )
 
@@ -129,7 +129,7 @@ def test_stateful_simulation_recorder():
         simulation = json.load(f)
 
     assert len(simulation["data"]["pairs"]) == 1
-    assert "1674991955" in simulation["data"]["pairs"][0]["response"]["body"]
+    assert "SPD-SLRSY-1867" in simulation["data"]["pairs"][0]["response"]["body"]
 
 
 def test_hoverfly_decorator_stateful_recorder(testdir, tmpdir):
@@ -143,17 +143,17 @@ from pytest_hoverfly import hoverfly
 @hoverfly('archive_org_simulation', record=True, stateful=True)
 def test_stateful_simulation_recorder():
     requests.get(
-        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        'https://archive.org/metadata/SPD-SLRSY-1867/metadata/identifier',
         headers={'Accept': 'application/json'},
 
     )
 
     resp = requests.get(
-        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        'https://archive.org/metadata/SPD-SLRSY-1867/metadata/identifier',
         headers={'Accept': 'application/json'},
     )
 
-    assert resp.json() == {"result": 1674991955}
+    assert resp.json() == {"result": "SPD-SLRSY-1867"}
     """
     )
 
@@ -182,10 +182,12 @@ def test_lack_of_unintended_side_effects():
 
     This test hits a network!
     """
-    resp = requests.get("https://archive.org/metadata/SPD-SLRSY-1867/created", headers={"Accept": "application/json"})
+    resp = requests.get(
+        "https://archive.org/metadata/SPD-SLRSY-1867/metadata/identifier", headers={"Accept": "application/json"}
+    )
 
     try:
-        assert resp.json() == {"result": 1674991955}, resp.text
+        assert resp.json() == {"result": "SPD-SLRSY-1867"}, resp.text
     except json.decoder.JSONDecodeError:
         pytest.fail(resp.text + "\n\n(Request went to Hoverfly insted of archive.org)")
 
@@ -209,11 +211,11 @@ from pytest_hoverfly import hoverfly
 @hoverfly(name='archive_org_simulation')
 def test_timeout_parsing(request):
     resp = requests.get(
-        'https://archive.org/metadata/SPD-SLRSY-1867/created',
+        'https://archive.org/metadata/SPD-SLRSY-1867/metadata/identifier',
         headers={'Accept': 'application/json'},
     )
 
-    assert resp.json() == {"result": 1674991955}
+    assert resp.json() == {"result": "SPD-SLRSY-1867"}
 
     # Hoverfly adds Hoverfly: Was-Here header
     assert 'Hoverfly' in resp.headers

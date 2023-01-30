@@ -73,7 +73,7 @@ def get_container(
     container_name: t.Optional[str] = None,
     ports: t.Optional[t.Dict[str, t.Optional[t.List[t.Dict[str, int]]]]] = None,
     image: str = IMAGE,
-    timeout: float = 30.0,
+    timeout: float = 3.0,
     docker_factory: t.Callable[[], DockerClient] = DockerClient.from_env,
     create_container_kwargs: t.Optional[t.Mapping[str, t.Any]] = None,
 ):

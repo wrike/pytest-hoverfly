@@ -62,7 +62,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--hoverfly-start-timeout",
         dest="hoverfly_start_timeout",
-        default=30.0,
+        default=3.0,
         help=(
             "Timeout used while starting the container. "
             "It's used two times: waiting for ports to start accepting connections "

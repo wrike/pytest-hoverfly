@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.0.4] - 2023-01-28
 ### Changed
 - Allow specifying hoverfly startup timeout
-- Increased default hoverfly startup timeout
 
 ## [5.0.3] - 2022-08-31
 ### Changed

@@ -6,7 +6,7 @@
           "path": [
             {
               "matcher": "exact",
-              "value": "/metadata/SPD-SLRSY-1867/created"
+              "value": "/metadata/SPD-SLRSY-1867/metadata/identifier"
             }
           ],
           "method": [
@@ -50,7 +50,7 @@
         },
         "response": {
           "status": 200,
-          "body": "{\"result\":1674991955}",
+          "body": "{\"result\":\"SPD-SLRSY-1867\"}",
           "encodedBody": false,
           "headers": {
             "Access-Control-Allow-Origin": [
